@@ -139,6 +139,9 @@ class Next(Toplevel, CenterWidgetMixin):
             except ValueError:
                 MessageBox.showerror("Status", "No API Key entered or API key incorrect.")
                 self.message.set("Status: ready")
+            except:
+                MessageBox.showerror("Status", "Unexpected error. Have you entered the API KEY?")
+                self.message.set("Status: ready")
         else:
             self.message.set("Status: ready")
     
