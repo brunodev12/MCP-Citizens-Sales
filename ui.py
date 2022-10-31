@@ -4,7 +4,7 @@ from tkinter import filedialog as FileDialog
 from settings import set_apis
 import raw_data
 from get_price import get_sales
-import aux
+import auxclass
 
 class CenterWidgetMixin:
     def center(self):
@@ -143,7 +143,7 @@ class Next(Toplevel, CenterWidgetMixin):
             self.message.set("Status: ready")
     
     def show_data(self):
-        aux.ShowData(self, dirname = self.name)
+        auxclass.ShowData(self, dirname = self.name)
 
 class secondWindow(Toplevel, CenterWidgetMixin):
     def __init__(self, parent, title, side):
