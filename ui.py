@@ -123,7 +123,7 @@ class Next(Toplevel, CenterWidgetMixin):
         self.statusbar.pack(side="left")
 
     def get_data(self):
-        self.message.set(f"Status: working...")
+        self.message.set("Status: working...")
         confirm = MessageBox.askokcancel(f"Data {self.name} side","The information will be processed, this may take several minutes")
         if confirm:
             try:
