@@ -27,6 +27,7 @@ def eth_price(block, side):
 def get_sales(side=None):
     name_dir = "eth" if side==0 else "trx"
     token_sales = []
+    print("Getting citizens sales...")
     #Open the file 'Sales.csv' with the sales and obtain the data
     with open(f"{name_dir}/Sales.csv", "r", newline="\n") as file:
         data = csv.DictReader(file)
@@ -36,6 +37,7 @@ def get_sales(side=None):
             if b == i['Txhash']:                       #Check if more than 1 citizen has been sold in the same block (very unlikely :D )
                 t = {'DateTime': i['DateTime'], 'Txhash': i['Txhash'], 'Token_ID': i['Token_ID'], 'Sale_price': a}
                 token_sales.append(t)
+                print(t)
 
 
 

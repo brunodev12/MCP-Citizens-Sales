@@ -8,6 +8,7 @@ from decouple import config
 def get_metadata(side=None, name_dir=None):
     #Open the file 'Sales_price.csv' and obtain the information
     citizens_sales = []
+    print("Getting citizens metadata...")
     with open(f"{name_dir}/Sales_price.csv", "r", newline="\n") as file:
         data = csv.DictReader(file)
         for i in data:

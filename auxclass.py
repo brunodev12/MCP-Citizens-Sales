@@ -1,7 +1,18 @@
+from sre_parse import State
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
-from ui import CenterWidgetMixin
+
+class CenterWidgetMixin:
+    def center(self):
+        self.update()
+        w = self.winfo_width()
+        h = self.winfo_height()
+        ws = self.winfo_screenwidth()
+        hs = self.winfo_screenheight()
+        x = int(ws/2 - w/2)
+        y = int(hs/2 - h/2)
+        self.geometry(f"{w}x{h*2}+{x}+{y}")
 
 class ShowData(Toplevel, CenterWidgetMixin):
     def __init__(self, parent, dirname):
@@ -10,12 +21,11 @@ class ShowData(Toplevel, CenterWidgetMixin):
         self.title(f"Show data {self.dirname} side")
         self.build()
         self.center()
-        self.transient(parent)
         self.grab_set()
     
     def build(self):
         frame = Frame(self)
-        frame.pack()
+        frame.pack(fill=BOTH, expand=1)
 
         self.treeview = ttk.Treeview(frame)
         self.treeview['columns'] = ('DateTime', 'Txhash', 'Token_ID', 'Sale_price', 'Rank',
@@ -39,32 +49,32 @@ class ShowData(Toplevel, CenterWidgetMixin):
 
         self.treeview.heading("DateTime", text="Datetime", anchor=CENTER, command=lambda: self.sort_columns("DateTime"))
         self.treeview.heading("Txhash", text="Txhash", anchor=CENTER, command=lambda: self.sort_columns("Txhash"))
-        self.treeview.heading("Token_ID", text="Token ID", anchor=CENTER, command=lambda: self.sort_columns("Token_ID"))
-        self.treeview.heading("Sale_price", text="Sale price", anchor=CENTER, command=lambda: self.sort_columns("Sale_price"))
+        self.treeview.heading("Token_ID", text="Token ID", anchor=CENTER, command=lambda: self.sort_columns("Token_ID", int))
+        self.treeview.heading("Sale_price", text="Sale price", anchor=CENTER, command=lambda: self.sort_columns("Sale_price", float))
         self.treeview.heading("Rank", text="Rank", anchor=CENTER, command=lambda: self.sort_columns("Rank"))
         self.treeview.heading("Gender", text="Gender", anchor=CENTER, command=lambda: self.sort_columns("Gender"))
         self.treeview.heading("Generation", text="Generation", anchor=CENTER, command=lambda: self.sort_columns("Generation"))
-        self.treeview.heading("Strength", text="Strength", anchor=CENTER, command=lambda: self.sort_columns("Strength"))
-        self.treeview.heading("Endurance", text="Endurance", anchor=CENTER, command=lambda: self.sort_columns("Endurance"))
-        self.treeview.heading("Charisma", text="Charisma", anchor=CENTER, command=lambda: self.sort_columns("Charisma"))
-        self.treeview.heading("Intelligence", text="Intelligence", anchor=CENTER, command=lambda: self.sort_columns("Intelligence"))
-        self.treeview.heading("Agility", text="Agility", anchor=CENTER, command=lambda: self.sort_columns("Agility"))
-        self.treeview.heading("Luck", text="Luck", anchor=CENTER, command=lambda: self.sort_columns("Luck"))
+        self.treeview.heading("Strength", text="Strength", anchor=CENTER, command=lambda: self.sort_columns("Strength", int))
+        self.treeview.heading("Endurance", text="Endurance", anchor=CENTER, command=lambda: self.sort_columns("Endurance", int))
+        self.treeview.heading("Charisma", text="Charisma", anchor=CENTER, command=lambda: self.sort_columns("Charisma", int))
+        self.treeview.heading("Intelligence", text="Intelligence", anchor=CENTER, command=lambda: self.sort_columns("Intelligence", int))
+        self.treeview.heading("Agility", text="Agility", anchor=CENTER, command=lambda: self.sort_columns("Agility", int))
+        self.treeview.heading("Luck", text="Luck", anchor=CENTER, command=lambda: self.sort_columns("Luck", int))
 
         self.treeview.tag_configure('gray', background='lightgray')
         self.treeview.tag_configure('normal', background='white')
         
 
-        yscrollbar = Scrollbar(frame)
+        yscrollbar = Scrollbar(frame, command=self.treeview.yview)
         yscrollbar.pack(side=RIGHT, fill=Y)
-        xscrollbar = Scrollbar(frame, orient='horizontal')
+        xscrollbar = Scrollbar(frame, command=self.treeview.xview, orient='horizontal')
         xscrollbar.pack(side=BOTTOM, fill='x')
 
         self.treeview['yscrollcommand'] = yscrollbar.set
         self.treeview['xscrollcommand'] = xscrollbar.set
 
         self.df=pd.read_csv(f"{self.dirname}/Citizens_sales.csv")
-        self.df.fillna('NoData', inplace=True)
+        self.df.fillna(0, inplace=True)
 
         my_tag = 'normal'
         for index, row in self.df.iterrows():
@@ -87,11 +97,28 @@ class ShowData(Toplevel, CenterWidgetMixin):
                 tags=my_tag
             )
 
-        self.treeview.pack()
+        self.treeview.pack(fill=BOTH, expand=1)
     
-    def sort_columns(self, namecolumn=""):
+        self.treeview.bind('<ButtonRelease-3>', self.click_handler)
+
+    def click_handler(self, event):
+        cur_item = self.treeview.item(self.treeview.focus())
+        col = self.treeview.identify_column(event.x)
+        try:
+            if col == '#2':
+                Tk.clipboard_clear(self)
+                Tk.clipboard_append(self, cur_item['values'][1])
+                print(cur_item['values'][1], "copied to clipboard")
+            if col == '#3':
+                Tk.clipboard_clear(self)
+                Tk.clipboard_append(self, cur_item['values'][2])
+                print(cur_item['values'][2], "copied to clipboard")
+        except IndexError:
+            pass
+
+    def sort_columns(self, namecolumn="", type=str):
         self.treeview.delete(*self.treeview.get_children())
-        self.df[namecolumn] = self.df[namecolumn].astype(str)
+        self.df[namecolumn] = self.df[namecolumn].astype(type)
         self.df.sort_values([namecolumn], inplace=True, ascending=True if self.df[namecolumn].is_monotonic_increasing==False else False)
         my_tag = 'normal'
         for index, row in self.df.iterrows():
