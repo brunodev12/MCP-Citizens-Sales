@@ -146,7 +146,11 @@ class Next(Toplevel, CenterWidgetMixin):
             self.message.set("Status: ready")
     
     def show_data(self):
-        auxclass.ShowData(self, dirname = self.name)
+        try:
+            auxclass.ShowData(self, dirname = self.name)
+        except FileNotFoundError:
+            MessageBox.showerror("Status", "File not found. You must get the data first.")
+            auxclass.ShowData.close(self)
 
 class secondWindow(Toplevel, CenterWidgetMixin):
     def __init__(self, parent, title, side):

@@ -1,4 +1,3 @@
-from sre_parse import State
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
@@ -140,3 +139,7 @@ class ShowData(Toplevel, CenterWidgetMixin):
                 row['Luck']),
                 tags=my_tag
             )
+    
+    def close(self):
+        self.destroy()
+        self.update()
