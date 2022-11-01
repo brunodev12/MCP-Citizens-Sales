@@ -18,6 +18,9 @@ pipenv run python3 ui.py
 
 ![image](https://user-images.githubusercontent.com/112636008/199337752-4a454472-6008-4f0c-912e-e3d57d2df6b8.png)
 
-![image](https://user-images.githubusercontent.com/112636008/199337914-f2f3b041-cb55-46bb-87b4-caaad9c5546c.png)
+![image](https://user-images.githubusercontent.com/112636008/199338593-573cc59f-fbd7-4261-9192-b787d79ad050.png)
 
-![image](https://user-images.githubusercontent.com/112636008/199337998-eb58c70c-02f3-4169-848d-7e49f578499c.png)
+![image](https://user-images.githubusercontent.com/112636008/199338691-b4953c61-2a9c-4210-830e-1066a4f6acd9.png)
+
+![image](https://user-images.githubusercontent.com/112636008/199338887-0f96f7e4-b84c-47a2-b002-5d5083ec2888.png)
+
