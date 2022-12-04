@@ -1,18 +1,24 @@
+# MCP Citizens Sales
+
 With this script you can get the sales of citizens in the game Megacryptopolis:
 
 You can run this program in two ways:
 
-1. You can use the portable version that is inside the folder: "portable"
+- You can use the portable version that is inside the folder: "portable"
 
-2. To run this program you must have python and the pipenv module installed:
+or
+
+- if you have python and the pipenv module installed, you can run the following commands:
 
 First you need to create a virtual environment and project dependencies with
 
-pipenv install
+`pipenv install`
 
 Then you can run the project with
 
-pipenv run python3 ui.py
+`pipenv run python3 ui.py`
+
+## Program preview:
 
 ![image](https://user-images.githubusercontent.com/112636008/199337676-9db1a6dd-8ce9-4575-8f3d-5f7357fa0cf7.png)
 
