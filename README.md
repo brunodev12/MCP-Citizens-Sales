@@ -8,7 +8,7 @@ You can run this program in two ways:
 
 or
 
-- if you have python and the pipenv module installed, you can run the following commands:
+- if you have python 3.10 and the pipenv module installed, you can run the following commands:
 
 First you need to create a virtual environment and project dependencies with
 
